@@ -34,6 +34,12 @@ SVGDrawer.prototype.writeHeater = function( )
 	fs.appendFileSync( this._fileName, "   \r\n");
 }
 
+SVGDrawer.prototype.writeEnd = function( )
+{
+	fs.appendFileSync( this._fileName, " </g>   \r\n");
+	fs.appendFileSync( this._fileName, "</svg>   \r\n");
+}
+
 // Deep clone an object.
 // This method is a copy of https://davidwalsh.name/javascript-clone
 //  There are other approaches for cloning objects in JavaScribe context
@@ -199,12 +205,6 @@ SVGDrawer.prototype.defineTriangle = function( parameterArray )
 	fs.appendFileSync( this._fileName, "   \r\n");
 	fs.appendFileSync( this._fileName, "   \r\n");
 
-}
-
-SVGDrawer.prototype.writeEnd = function( )
-{
-	fs.appendFileSync( this._fileName, " </g>   \r\n");
-	fs.appendFileSync( this._fileName, "</svg>   \r\n");
 }
 
 SVGDrawer.prototype.writeComment = function( theText )
