@@ -17,7 +17,7 @@ function draw()
 {
 	// File name
 
-	var fileName = "sipesc_windows.svg";
+	var fileName = "foo.svg";
 	drawer.setFileName( fileName ); 
 
 	var fdw = fs.openSync( fileName, 'w');
