@@ -8,15 +8,12 @@ var sys = require("util");
 var path = require('path');
 var assert = require('assert');
 
-
-var SVGDrawer = require('../src/drawsvg.js');
-
+var SVGDrawer = require('./src/drawsvg.js');
 var drawer = new SVGDrawer(); 
 
 function draw()
 {
 	// File name
-
 	var fileName = "foo.svg";
 	drawer.setFileName( fileName ); 
 
@@ -24,28 +21,38 @@ function draw()
 	assert.ok( fdw, "open target input data file failed." );
 
 	try{
-		drawer.writeHeater();
-		drawer.defineBigArrow();
+		drawer.header();
+                var theAttr={};
+                theAttr['width'] = '100%';
+                theAttr['height'] = '100%';
+                theAttr['version'] = '1.1';
+                theAttr['xmlns']="http://www.w3.org/2000/svg"
+                drawer.element('svg', theAttr, '' )
 
-		var CoordinateRoot_x = 0;
-		var CoordinateRoot_y = 0;
 
-		drawer.writeComment (  "GUI" )
+                theAttr={};
+                theAttr['font-family'] = 'Verdana';
+                theAttr['font-size'] = '12';
+                drawer.element('g', theAttr )
 
-		var imagineArray = new Array();
+                theAttr={};
+                theAttr['width'] = '300';
+                theAttr['height'] = '100';
+                theAttr['style'] = 'fill:rgb(0,0,255);stroke-width:1;stroke:rgb(0,0,0)';
+                drawer.element('rect', theAttr )
+                drawer.popData();
+                drawer.popData();
 
-		imagineArray['x']  =  CoordinateRoot_x + 300 ;
-		imagineArray['y']  =  CoordinateRoot_y + 150;
-		imagineArray['width']  =   500;
-		imagineArray['height']  =  400 ;
-		imagineArray['href']  =   './mainwindow.JPG';
+                theAttr={};
+                theAttr['cx'] = '300';
+                theAttr['cy'] = '300';
+                theAttr['r'] = '30';
+                theAttr['stroke'] = 'black';
+                drawer.element('circle', theAttr )
 
-		drawer.imagine(imagineArray);
+   	        // ...                 
 
-		// ...                 
-
-		drawer.writeEnd();
- 
+		drawer.close();
 	}
 	catch(err)
 	{
