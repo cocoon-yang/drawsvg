@@ -185,71 +185,36 @@ SVGDrawer.prototype.drawFan = function( x, y, radius )
 //  There is some brilliant svg logo libraries, such as:
 //  https://github.com/gilbarbara/logos
 //
-SVGDrawer.prototype.defineTriangle = function( parameterArray )
+SVGDrawer.prototype.defineTriangle = function()
 {
-	var text = parameterArray['text'];
+      var self = this;
+      var theAttr={};
+      self.element('defs', theAttr )
 
-	var defName = parameterArray['defName'];
-	var y = parameterArray['y'];
-	var dx = parameterArray['dx'];
-	var dy = parameterArray['dy'];
+      theAttr={};
+      theAttr['id'] = 'Triangle';
+      theAttr['viewBox'] = '0 0 12 10';
+      theAttr['refX'] = '0';
+      theAttr['refY'] = '5'; 
+      theAttr['markerUnits'] = 'strokeWidth';
+      theAttr['markerWidth'] = '12'; 
+      theAttr['markerHeight'] = '8'; 
+      theAttr['style'] = 'fill-rule:evenodd;stroke:none'
+      theAttr['orient'] = 'auto'; 
+      self.element('marker', theAttr, '    ' )
 
-	// style
-	var style = "style = \"";
+      theAttr={};
+      theAttr['d'] = 'M 0 0 L 12 5 L 0 10 L 3 5';
+      self.element('path', theAttr, '      ' )
+      self.popData();
 
-	//fill:none;stroke:#000000;stroke-width:1.5
-
-
-	var stroke = parameterArray['stroke'];
-	if (typeof stroke === "undefined")
-	{
-		console.log("stroke is undefined");
-	}
-	else
-	{
-		style = style + ' stroke:' + stroke + ";";
-	}
-
-	var stroke_width = parameterArray['stroke-width'];
-	if (typeof stroke_width === "undefined")
-	{
-		console.log("stroke_width is undefined");
-	}
-	else
-	{
-		style = style + " stroke-width: " + stroke_width + ";";
-	}
-
-	var fill = parameterArray['fill'];
-	if (typeof fill === "undefined")
-	{
-		console.log("fill is undefined");
-	}
-	else
-	{
-		style = style + ' fill: ' + fill + ";";
-	}
-
-	style = style + "\"";
-
-	fs.appendFileSync( this._fileName, "   \r\n");
-	fs.appendFileSync( this._fileName, "   \r\n");
-	fs.appendFileSync( this._fileName, "  <defs>   \r\n");
-	fs.appendFileSync( this._fileName, "    <marker id=\"" + defName + "\"   \r\n");
-	fs.appendFileSync( this._fileName, "      viewBox=\"0 0 12 10\" refX=\"0\" refY=\"5\"    \r\n");
-	fs.appendFileSync( this._fileName, "      markerUnits=\"strokeWidth\"   \r\n");
-	fs.appendFileSync( this._fileName, "      markerWidth=\"12\" markerHeight=\"8\"   \r\n");
-	fs.appendFileSync( this._fileName, "      style=\"fill-rule:evenodd;stroke:none\"    \r\n");
-	fs.appendFileSync( this._fileName, "      orient=\"auto\">   \r\n");
-	fs.appendFileSync( this._fileName, "      <path d=\"M 0 0 L 12 5 L 0 10 L 3 5\"  \r\n");
-	fs.appendFileSync( this._fileName, "       " + style + "/>    \r\n");
-	fs.appendFileSync( this._fileName, "    <path d=\"M 0 5 L 3 5 \"   \r\n");
-	fs.appendFileSync( this._fileName, "       " + style + "/>    \r\n");
-	fs.appendFileSync( this._fileName, "    </marker>   \r\n");
-	fs.appendFileSync( this._fileName, "  </defs>   \r\n");
-	fs.appendFileSync( this._fileName, "   \r\n");
-	fs.appendFileSync( this._fileName, "   \r\n");
-
+      theAttr={};
+      theAttr['d'] = 'M 0 5 L 3 5';
+      theAttr['style'] = 'fill:none;stroke:#000000;stroke-width:1.5';
+      self.element('path', theAttr, '      '  )
+      self.popData();
+      self.popData();  // Markers
+      self.popData();  // defs   
 }
 
 SVGDrawer.prototype.writeComment = function( theText )
@@ -1422,7 +1387,7 @@ SVGDrawer.prototype.linkwitharrowline = function ( theSourceParameterArray, theT
 
 }
 
-SVGDrawer.prototype.coordinateaxis = function( parameterArray )
+SVGDrawer.prototype.coordinateaxis= function( parameterArray )
 {
 	var self = this;
 
@@ -1437,88 +1402,50 @@ SVGDrawer.prototype.coordinateaxis = function( parameterArray )
 	var x_range = x2 - x1;
 	var y_range = y2 - y1;
 
-
-	var style = "style = \"";
-
-	var stroke = parameterArray['stroke']; 
-	if (typeof stroke === "undefined") {
-	    console.log("stroke is undefined");
-	}else
-	{
-		var style  = style + ' stroke:' + stroke + ";";
-	}
-
-	var stroke_width = parameterArray['stroke-width']; 
-	if (typeof stroke_width === "undefined") {
-	    console.log("stroke_width is undefined");
-	}else
-	{
-		var style  = style + " stroke-width: " + stroke_width + ";";
-	}
-
-	var stroke_dasharray = parameterArray['stroke-dasharray'];   
-	if (typeof stroke_dasharray === "undefined") {
-	    console.log("stroke_dasharray is undefined");
-	}else
-	{
-		var style  = style + ' stroke-dasharray: ' + stroke_dasharray + ";";
-		
-	}
-
-
-
-	var axisArray = new Array();
-	axisArray.push([ x1, y1] );
-
 	var step = parameterArray['step']; 
-	if (typeof stroke === "undefined") {
-	    console.log("step is undefined");
-	}else
+        delete parameterArray['step']; 
+
+	for( var i = 1; i < step; i++ )
 	{
-		for( var i = 1; i < step; i++ )
+		var x_scale = x_range / step;
+		var y_scale = y_range / step;
+
+		var x = x1 + x_scale * i ;
+		var y = y1 + y_scale * i ;
+
+		var x_scale_length = 0 ;
+		var y_scale_length = 0 ; 
+
+		if( y_range != 0 )
 		{
-
-			var x_scale = x_range / step;
-			var y_scale = y_range / step;
-
-			var x = x1 + x_scale * i ;
-			var y = y1 + y_scale * i ;
-
-			var x_scale_length = 0 ;
-			var y_scale_length = 0 ; 
-
-			if( y_range != 0 )
-			{
-				x_scale_length = 10 ;
-			}
-
-			if( x_range != 0 )
-			{
-				y_scale_length = 10 ;
-			}
-
-			var x_scale = x + x_scale_length  ;
-			var y_scale = y + y_scale_length  ; 
-
-
-			axisArray.push([ x, y] );
-
-			fs.appendFileSync(  this._fileName, "   <line x1=\"" + x + "\" y1= \"" + y + "\" x2=\""  + x_scale + "\" y2= \"" + y_scale + "\" " );
-			fs.appendFileSync(  this._fileName,  style + " \" />  \r\n"); 
+			x_scale_length = 10 ;
 		}
+
+		if( x_range != 0 )
+		{
+			y_scale_length = 10 ;
+		}
+		var x_scale = x + x_scale_length  ;
+		var y_scale = y + y_scale_length  ; 
+
+                var theAttr ={};
+                theAttr['x1'] =  x ;
+                theAttr['y1'] =  y ;
+                theAttr['x2'] =  x_scale ;
+                theAttr['y2'] =  y_scale ;
+                theAttr['style'] = parameterArray['style'] ;
+                self.element('line', theAttr, '      ' )
+                self.popData();
 	}
 
-	var style  = style + ' marker-end: url(#Triangle)' + ";";
-	style  = style + "\"";
-
-	x2 = end_x ;
-	y2 = end_y ;
-
-	fs.appendFileSync(  this._fileName, "   <line x1=\"" + x1 + "\" y1= \"" + y1 + "\" x2=\""  + x2 + "\" y2= \"" + y2 + "\" " );
-	fs.appendFileSync(  this._fileName,  style + "/>  \r\n"); 
-	fs.appendFileSync(  this._fileName, "   \r\n"); 
-
-	return axisArray;
+        var theAttr ={};
+        theAttr['x1'] =  x1 ;
+        theAttr['y1'] =  y1 ;
+        theAttr['x2'] =  end_x  ;
+        theAttr['y2'] =  end_y  ;
+        theAttr['style'] = parameterArray['style']  + ' marker-end: url(#Triangle)' + ";";
+        self.element('line', theAttr, '    ' )
+        self.popData();
 }
 SVGDrawer.prototype.defineHardDisk = function( )
 {
