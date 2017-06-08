@@ -57,6 +57,12 @@ SVGDrawer.prototype.element = function( name, attribute, prefix  )
           prefix = '  ';
      }
 
+     var content = attribute['content']
+     if( undefined !== content )
+     {
+          delete attribute['content'];
+     }
+	
      var str = String(prefix) + '</' + name + '> \n';
      self.pushData( str );
 
@@ -66,7 +72,12 @@ SVGDrawer.prototype.element = function( name, attribute, prefix  )
           str += ' ' + id + '=\"' + attribute[id] +'\"';
      }
     str += '>\n'
-    fs.appendFileSync( this._fileName, str );       
+    fs.appendFileSync( this._fileName, str );  
+
+     if( undefined !== content )
+     {
+          fs.appendFileSync( this._fileName, String(prefix) + '  ' + content + '\n'  ); 
+     }     
 }
 SVGDrawer.prototype.writeHeater = function( )
 {
