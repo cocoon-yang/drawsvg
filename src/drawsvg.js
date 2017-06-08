@@ -22,7 +22,52 @@ SVGDrawer.prototype.getFileName = function( )
 {
 	return this._fileName;
 }
+SVGDrawer.prototype.header = function( )
+{
+	fs.appendFileSync( this._fileName, "<?xml version=\"1.0\"?>  \r\n");
+}
 
+
+SVGDrawer.prototype.pushData = function( theData )
+{
+    this._STACK.push( theData );
+}
+
+SVGDrawer.prototype.popData = function( )
+{
+    var theData =  this._STACK.pop();     
+    fs.appendFileSync( this._fileName, theData ); 
+}
+
+SVGDrawer.prototype.close = function( )
+{
+    var len = this._STACK.length;
+    for( var i = 0; i < len; i++ )
+    {
+         this.popData();
+    }
+}
+
+SVGDrawer.prototype.element = function( name, attribute, prefix  )
+{
+     var self = this;
+
+     if( undefined == prefix )
+     {
+          prefix = '  ';
+     }
+
+     var str = String(prefix) + '</' + name + '> \n';
+     self.pushData( str );
+
+     str = String(prefix) + '<' + name;
+     for( var id in attribute )
+     {
+          str += ' ' + id + '=\"' + attribute[id] +'\"';
+     }
+    str += '>\n'
+    fs.appendFileSync( this._fileName, str );       
+}
 SVGDrawer.prototype.writeHeater = function( )
 {
 	fs.appendFileSync( this._fileName, "<?xml version=\"1.0\"?>  \r\n");
