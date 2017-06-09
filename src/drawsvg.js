@@ -156,6 +156,119 @@ SVGDrawer.prototype.clone = function(src)
 
 }
 
+SVGDrawer.prototype.defineHardDisk = function( )
+{
+      var self = this;
+      var theAttr={};
+      self.element('defs', theAttr )
+
+      theAttr={};
+      theAttr['id'] = 'Harddisk';
+      theAttr['viewBox'] = '0 0 50 110';
+      theAttr['refX'] = '0';
+      theAttr['refY'] = '0'; 
+      theAttr['markerUnits'] = 'strokeWidth';
+      theAttr['markerWidth'] = '40'; 
+      theAttr['markerHeight'] = '100'; 
+      // theAttr['style'] = 'fill-rule:evenodd;stroke:none'
+      theAttr['orient'] = 'auto'; 
+      self.element('marker', theAttr, '    ' )
+
+      theAttr={};
+      theAttr['cx'] = '24';
+      theAttr['cy'] = '24';
+      theAttr['rx'] = '23';
+      theAttr['ry'] = '10';
+      theAttr['stroke'] = 'black';
+      theAttr['stroke-width'] = 2;
+      theAttr['fill'] = 'white';
+      self.element('ellipse', theAttr, '      ' )
+      self.popData();
+
+      theAttr={};
+      theAttr['cx'] = '24';
+      theAttr['cy'] = '64';
+      theAttr['rx'] = '23';
+      theAttr['ry'] = '10';
+      theAttr['stroke'] = 'black';
+      theAttr['stroke-width'] = 2;
+      theAttr['fill'] = 'white';
+      self.element('ellipse', theAttr, '      ' )
+      self.popData();
+
+      theAttr={};
+      theAttr['x1'] = '47';
+      theAttr['y1'] = '24';
+      theAttr['x2'] = '47';
+      theAttr['y2'] = '64';
+      theAttr['stroke'] = 'black';
+      theAttr['stroke-width'] = 1;
+      self.element('line', theAttr, '      ' )
+      self.popData();
+
+      theAttr={};
+      theAttr['x1'] = '1';
+      theAttr['y1'] = '24';
+      theAttr['x2'] = '1';
+      theAttr['y2'] = '64';
+      theAttr['stroke'] = 'black';
+      theAttr['stroke-width'] = 1;
+      self.element('line', theAttr, '      ' )
+      self.popData();
+
+      self.popData();  // Markers
+      self.popData();  // defs   
+}
+
+
+SVGDrawer.prototype.defineBigArrow = function( )
+{
+      var self = this;
+      var theAttr={};
+      self.element('defs', theAttr )
+
+      theAttr={};
+      theAttr['id'] = 'BigArrow';
+      theAttr['viewBox'] = '0 0 100 100';
+      theAttr['refX'] = '0';
+      theAttr['refY'] = '0'; 
+      theAttr['markerUnits'] = 'strokeWidth';
+      theAttr['markerWidth'] = '200'; 
+      theAttr['markerHeight'] = '200'; 
+      theAttr['orient'] = 'auto';
+      self.element('marker', theAttr )
+
+
+      theAttr={};
+      theAttr['d'] = 'm22.502 9.5398l19.004 16.506-19.004 16.423v-7.87h-14.996l0.0004-17.055h14.996v-8.0042z';
+      theAttr['style'] = 'color:black'
+      theAttr['stroke'] = '#204a87'
+      theAttr['fill'] = '#3465a4'
+      self.element('path', theAttr, '      '  )
+      self.popData();
+
+
+      theAttr={};
+      theAttr['d'] = 'm8 18.048v7.952l32.769-0.024-17.615-15.345v7.417h-15.154z';
+      theAttr['style'] = 'color:black'
+      theAttr['stroke'] = '#204a87'
+      theAttr['fill'] = '#3465a4'
+      self.element('path', theAttr, '      '  )
+      self.popData();
+
+
+      theAttr={};
+      theAttr['d'] = 'm23.573 11.681l16.517 14.386-16.517 14.199v-6.738h-15.067l0.0004-14.978h15.067v-6.869z';
+      theAttr['style'] = 'color:black'
+      //theAttr['stroke'] = '#204a87'
+      theAttr['fill'] = '#729fcf'
+      theAttr['opacity'] = '.35393'
+      self.element('path', theAttr, '      '  )
+      self.popData();
+      self.popData();  // Markers
+      self.popData();  // defs   
+}
+
 SVGDrawer.prototype.drawFan = function( x, y, radius )
 {
 	var self = this;
@@ -236,16 +349,8 @@ SVGDrawer.prototype.writeComment = function( theText )
 	fs.appendFileSync( this._fileName, "   \r\n");
 }
 
-SVGDrawer.prototype.drawText = function( x, y, font_size, theText )
-{
-	fs.appendFileSync( this._fileName, "   <text x=\"" + x + "\" y=\"" + y + "\" font-size=\"" + font_size + "\"   fill=\"black\" >" + theText + "</text>  \r\n");
-}
-
-SVGDrawer.prototype.drawLine = function( x1, y1, x2, y2 )
-{
-	fs.appendFileSync( this._fileName, "  <line   x1=\"" + x1 + "\" y1= \"" + y1 + "\"   x2=\"" + x2 + "\" y2= \"" + y2 + "\" style = \"stroke: Black \" />  \r\n");
-	fs.appendFileSync( this._fileName, "   \r\n");
-}
+ 
+ 
 
 // (x,y)                 (x + dx -0.4dy, y)
 //  *---------------------*
@@ -337,476 +442,7 @@ SVGDrawer.prototype.processIcon = function( parameterArray )
 	fs.appendFileSync( this._fileName, "   \r\n");
 
 }
-
-SVGDrawer.prototype.text = function( parameterArray )
-{
-
-	var text = parameterArray['text'];
-
-	var x = parameterArray['x'];
-	var y = parameterArray['y'];
-	var dx = parameterArray['dx'];
-	var dy = parameterArray['dy'];
-
-	// style
-	var style = "style = \"";
-
-	var rotate = parameterArray['rotate'];
-	if (typeof rotate === "undefined")
-	{
-		console.log("rotate is undefined");
-	}
-	else
-	{
-		var style = style + ' rotate:' + rotate + ";";
-	}
-
-	var textLength = parameterArray['textLength'];
-	if (typeof textLength === "undefined")
-	{
-		console.log("textLength is undefined");
-	}
-	else
-	{
-		var style = style + ' textLength:' + textLength + ";";
-	}
-
-	var stroke = parameterArray['stroke'];
-	if (typeof stroke === "undefined")
-	{
-		console.log("stroke is undefined");
-	}
-	else
-	{
-		var style = style + ' stroke:' + stroke + ";";
-	}
-
-	var stroke_width = parameterArray['stroke-width'];
-	if (typeof stroke_width === "undefined")
-	{
-		console.log("stroke_width is undefined");
-	}
-	else
-	{
-		var style = style + " stroke-width: " + stroke_width + ";";
-	}
-
-	var fill = parameterArray['fill'];
-	if (typeof fill === "undefined")
-	{
-		console.log("fill is undefined");
-	}
-	else
-	{
-		var style = style + ' fill: ' + fill + ";";
-	}
-
-	var lengthAdjust = parameterArray['lengthAdjust'];
-	if (typeof lengthAdjust === "undefined")
-	{
-		console.log("stroke is undefined");
-	}
-	else
-	{
-		var style = style + ' lengthAdjust:' + lengthAdjust + ";";
-	}
-
-	var writing_mode = parameterArray['writing-mode'];
-	if (typeof writing_mode === "undefined")
-	{
-		console.log("writing_mode is undefined");
-	}
-	else
-	{
-		var style = style + ' writing-mode:' + writing_mode + ";";
-	}
-
-	var textclass = parameterArray['class'];
-	if (typeof textclass === "undefined")
-	{
-		console.log("class is undefined");
-	}
-	else
-	{
-		var style = style + ' class:' + textclass + ";";
-	}
-
-	var font_size = parameterArray['font-size'];
-	if (typeof font_size === "undefined")
-	{
-		console.log("font_size is undefined");
-	}
-	else
-	{
-		var style = style + ' font-size:' + font_size + ";";
-	}
-
-	var font_weight = parameterArray['font-weight'];
-	if (typeof font_weight === "undefined")
-	{
-		console.log("font_weight is undefined");
-	}
-	else
-	{
-		var style = style + ' font-weight:' + font_weight + ";";
-	}
-
-	var font_style = parameterArray['font-style'];
-	if (typeof font_style === "undefined")
-	{
-		console.log("font_style is undefined");
-	}
-	else
-	{
-		var style = style + ' font-style:' + font_style + ";";
-	}
-
-	var font_family = parameterArray['font-family'];
-	if (typeof font_family === "undefined")
-	{
-		console.log("font_family is undefined");
-	}
-	else
-	{
-		var style = style + ' font-family:' + font_family + ";";
-	}
-
-	var text_decoration = parameterArray['text-decoration'];
-	if (typeof text_decoration === "undefined")
-	{
-		console.log("text_decoration is undefined");
-	}
-	else
-	{
-		var style = style + ' text-decoration:' + text_decoration + ";";
-	}
-
-	var transform = parameterArray['transform'];
-	if (typeof transform === "undefined")
-	{
-		console.log("transform is undefined");
-	}
-	else
-	{
-		//var style  = style + ' transform:' + transform + ";";
-	}
-
-	var text_anchor = parameterArray['text-anchor'];
-	if (typeof text_anchor === "undefined")
-	{
-		console.log("text-anchor is undefined");
-	}
-	else
-	{
-		var style = style + ' text-anchor:' + text_anchor + ";";
-	}
-
-	var dominant_baselin = parameterArray['dominant-baselin'];
-	if (typeof dominant_baselin === "undefined")
-	{
-		console.log("dominant-baselin is undefined");
-	}
-	else
-	{
-		var style = style + ' dominant-baselin:' + dominant_baselin + ";";
-	}
-
-	style = style + "\"";
-
-	fs.appendFileSync( this._fileName, "   <text x=\"" + x + "\" y= \"" + y + "\" " + "transform = \"" + transform + "\" " );
-	fs.appendFileSync( this._fileName, style + ">  \r\n");
-	fs.appendFileSync( this._fileName, "     " + text + "  \r\n");
-	fs.appendFileSync( this._fileName, "   </text>   \r\n");
-}
-
-SVGDrawer.prototype.rect = function( parameterArray )
-{
-	var x = parameterArray['x'];
-	var y = parameterArray['y'];
-
-	var rx = parameterArray['rx'];
-	if (typeof rx === "undefined")
-	{
-		console.log("rx is undefined");
-		rx = 0;
-	}
-
-	var ry = parameterArray['ry'];
-	if (typeof ry === "undefined")
-	{
-		console.log("ry is undefined");
-		ry = 0;
-	}
-
-	var width = parameterArray['width'];
-	var height = parameterArray['height'];
-
-	var style = "style = \"";
-
-	var stroke = parameterArray['stroke'];
-	if (typeof stroke === "undefined")
-	{
-		console.log("stroke is undefined");
-	}
-	else
-	{
-		var style = style + ' stroke:' + stroke + ";";
-	}
-
-	var stroke_width = parameterArray['stroke-width'];
-	if (typeof stroke_width === "undefined")
-	{
-		console.log("stroke_width is undefined");
-	}
-	else
-	{
-		var style = style + " stroke-width: " + stroke_width + ";";
-	}
-
-	var stroke_dasharray = parameterArray['stroke-dasharray'];
-	if (typeof stroke_dasharray === "undefined")
-	{
-		console.log("stroke-dasharray is undefined");
-	}
-	else
-	{
-		var style = style + ' stroke-dasharray: ' + stroke_dasharray + ";";
-	}
-
-	var fill = parameterArray['fill'];
-	if (typeof fill === "undefined")
-	{
-		console.log("fill is undefined");
-	}
-	else
-	{
-		var style = style + ' fill: ' + fill + ";";
-	}
-
-	var fill_opacity = parameterArray['fill_opacity'];
-	if (typeof fill_opacity === "undefined")
-	{
-		console.log("fill_opacity is undefined");
-	}
-	else
-	{
-		var style = style + ' fill-opacity: ' + fill_opacity + ";";
-	}
-
-	var opacity = parameterArray['opacity'];
-	if (typeof opacity === "undefined")
-	{
-		console.log("opacity is undefined");
-	}
-	else
-	{
-		var style = style + ' opacity: ' + opacity + ";";
-	}
-
-	style = style + "\"";
-
-	/********
-	 var transform = parameterArray['transform'];
-	 if (typeof transform === "undefined") {
-	 console.log("transform is undefined");
-	 }else
-	 {
-	 var style = style + " transform = \"" + transform + "\"";
-	 }
-
-	 style  = style + "\"";
-	 **********/
-
-	fs.appendFileSync( this._fileName, "   <rect x=\"" + x + "\" y= \"" + y + "\" rx = \"" + rx + "\" " + " ry = \"" + ry + "\" width=\"" + width + "\" height= \"" + height + "\" " );
-	fs.appendFileSync( this._fileName, style + "/>  \r\n");
-	fs.appendFileSync( this._fileName, "   \r\n");
-
-}
-
-SVGDrawer.prototype.ellipse = function( parameterArray )
-{
-	var cx = parameterArray['cx'];
-	var cy = parameterArray['cy'];
-
-	var rx = parameterArray['rx'];
-	var ry = parameterArray['ry'];
-
-	var style = "style = \"";
-
-	var stroke = parameterArray['stroke'];
-	if (typeof stroke === "undefined")
-	{
-		console.log("stroke is undefined");
-	}
-	else
-	{
-		var style = style + ' stroke:' + stroke + ";";
-	}
-
-	var stroke_width = parameterArray['stroke-width'];
-	if (typeof stroke_width === "undefined")
-	{
-		console.log("stroke_width is undefined");
-	}
-	else
-	{
-		var style = style + " stroke-width: " + stroke_width + ";";
-	}
-
-	var stroke_dasharray = parameterArray['stroke-dasharray'];
-	if (typeof stroke_dasharray === "undefined")
-	{
-		console.log("stroke-dasharray is undefined");
-	}
-	else
-	{
-		var style = style + ' stroke-dasharray: ' + stroke_dasharray + ";";
-	}
-
-	var fill = parameterArray['fill'];
-	if (typeof fill === "undefined")
-	{
-		console.log("fill is undefined");
-	}
-	else
-	{
-		var style = style + ' fill: ' + fill + ";";
-	}
-
-	var fill_opacity = parameterArray['fill_opacity'];
-	if (typeof fill_opacity === "undefined")
-	{
-		console.log("fill_opacity is undefined");
-	}
-	else
-	{
-		var style = style + ' fill-opacity: ' + fill_opacity + ";";
-	}
-
-	style = style + "\"";
-
-	var transform = parameterArray['transform'];
-	if (typeof transform === "undefined")
-	{
-		console.log("transform is undefined");
-	}
-	else
-	{
-		var style = style + " transform = \"" + transform + "\"";
-	}
-
-	fs.appendFileSync( this._fileName, "   <ellipse cx=\"" + cx + "\" cy= \"" + cy + "\" rx=\"" + rx + "\" ry= \"" + ry + "\" " );
-	fs.appendFileSync( this._fileName, style + "/>  \r\n");
-	fs.appendFileSync( this._fileName, "   \r\n");
-
-}
-
-SVGDrawer.prototype.path = function( parameterArray )
-{
-	if( parameterArray['d'] === undefined)
-	{
-		console.log( "parameterArray['d'] undefine " );
-		return;
-	}
-
-	var d = parameterArray['d'];
-
-	var style = "style = \"";
-
-	var stroke = parameterArray['stroke'];
-	if (typeof stroke === "undefined")
-	{
-		console.log("stroke is undefined");
-	}
-	else
-	{
-		var style = style + ' stroke:' + stroke + ";";
-	}
-
-	var stroke_width = parameterArray['stroke-width'];
-	if (typeof stroke_width === "undefined")
-	{
-		console.log("stroke_width is undefined");
-	}
-	else
-	{
-		var style = style + " stroke-width: " + stroke_width + ";";
-	}
-
-	var fill = parameterArray['fill'];
-	if (typeof fill === "undefined")
-	{
-		console.log("fill is undefined");
-	}
-	else
-	{
-		var style = style + ' fill: ' + fill + ";";
-	}
-
-	style = style + "\""
-
-	fs.appendFileSync( this._fileName, "   <path d=\"" + d + "\" " );
-	fs.appendFileSync( this._fileName, style + "/>  \r\n");
-	fs.appendFileSync( this._fileName, "   \r\n");
-}
-
-SVGDrawer.prototype.polyline = function( parameterArray )
-{
-	var points = parameterArray['points'];
-	if (typeof points === "undefined")
-	{
-		console.log("points is undefined");
-		return;
-	}
-
-	var style = "style = \"";
-
-	var stroke = parameterArray['stroke'];
-	if (typeof stroke === "undefined")
-	{
-		console.log("stroke is undefined");
-	}
-	else
-	{
-		var style = style + ' stroke:' + stroke + ";";
-	}
-
-	var stroke_width = parameterArray['stroke-width'];
-	if (typeof stroke_width === "undefined")
-	{
-		console.log("stroke_width is undefined");
-	}
-	else
-	{
-		var style = style + " stroke-width: " + stroke_width + ";";
-	}
-
-	var stroke_dasharray = parameterArray['stroke-dasharray'];
-	if (typeof stroke_dasharray === "undefined")
-	{
-		console.log("stroke_dasharray is undefined");
-	}
-	else
-	{
-		var style = style + ' stroke-dasharray: ' + stroke_dasharray + ";";
-	}
-
-	var fill = parameterArray['fill'];
-	if (typeof fill === "undefined")
-	{
-		console.log("fill is undefined");
-	}
-	else
-	{
-		var style = style + ' fill: ' + fill + ";";
-	}
-
-	style = style + "\""
-
-	fs.appendFileSync( this._fileName, "   <polyline points=\"" + points + "\" " );
-	fs.appendFileSync( this._fileName, style + "/>  \r\n");
-	fs.appendFileSync( this._fileName, "   \r\n");
-}
+ 
 
 /***************
               (1)
@@ -932,91 +568,7 @@ SVGDrawer.prototype.bigArrow = function( parameterArray )
 	fs.appendFileSync( this._fileName, "   \r\n");
 
 }
-
-SVGDrawer.prototype.line = function( parameterArray )
-{
-	var x1 = parameterArray['x1'];
-	var x2 = parameterArray['x2'];
-	var y1 = parameterArray['y1'];
-	var y2 = parameterArray['y2'];
-
-	var style = "style = \"";
-
-	var stroke = parameterArray['stroke'];
-	if (typeof stroke === "undefined")
-	{
-		console.log("stroke is undefined");
-	}
-	else
-	{
-		var style = style + ' stroke:' + stroke + ";";
-	}
-
-	var stroke_width = parameterArray['stroke-width'];
-	if (typeof stroke_width === "undefined")
-	{
-		console.log("stroke_width is undefined");
-	}
-	else
-	{
-		var style = style + " stroke-width: " + stroke_width + ";";
-	}
-
-	var stroke_dasharray = parameterArray['stroke-dasharray'];
-	if (typeof stroke_dasharray === "undefined")
-	{
-		console.log("stroke_dasharray is undefined");
-	}
-	else
-	{
-		var style = style + ' stroke-dasharray: ' + stroke_dasharray + ";";
-	}
-
-	var marker_end = parameterArray['marker-end'];
-	if (typeof marker_end === "undefined")
-	{
-		console.log("marker_end is undefined");
-	}
-	else
-	{
-		var style = style + ' marker-end: ' + marker_end + ";";
-	}
-
-	style = style + "\""
-
-	fs.appendFileSync( this._fileName, "   <line x1=\"" + x1 + "\" y1= \"" + y1 + "\" x2=\"" + x2 + "\" y2= \"" + y2 + "\" " );
-	fs.appendFileSync( this._fileName, style + "/>  \r\n");
-	fs.appendFileSync( this._fileName, "   \r\n");
-}
-
-SVGDrawer.prototype.imagine = function( parameterArray )
-{
-	var x = parameterArray['x'];
-	var y = parameterArray['y'];
-	var width = parameterArray['width'];
-	var height = parameterArray['height'];
-	var href = parameterArray['href'];
-	if (typeof href === "undefined")
-	{
-		console.log("href is undefined");
-		return;
-	}
-
-	var title = parameterArray['title'];
-
-	fs.appendFileSync( this._fileName, "   <image x=\"" + x + "\" y= \"" + y + "\" width=\"" + width + "\" height= \"" + height + "\" " );
-	fs.appendFileSync( this._fileName, " xlink:href = " + "\"" + href + "\" >  \r\n");
-
-	if (typeof title !== "undefined")
-	{
-		fs.appendFileSync( this._fileName, "       <title>" + title + "</title>   \r\n");
-	}
-
-	fs.appendFileSync( this._fileName, "   </image>   \r\n");
-	fs.appendFileSync( this._fileName, "   \r\n");
-}
-
-
+ 
 SVGDrawer.prototype.drawHorizontalGridArray = function( x, y, array )
 {
 	var self = this
