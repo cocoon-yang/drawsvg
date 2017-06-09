@@ -269,6 +269,204 @@ SVGDrawer.prototype.defineBigArrow = function( )
       self.popData();  // defs   
 }
 
+
+
+
+SVGDrawer.prototype.coordinateaxis= function( parameterArray )
+{
+	var self = this;
+
+	var x1 = parameterArray['x1'];
+	var x2 = parameterArray['x2'];
+	var y1 = parameterArray['y1'];
+	var y2 = parameterArray['y2'];
+
+	var end_x = x2;
+	var end_y = y2;
+
+	var x_range = x2 - x1;
+	var y_range = y2 - y1;
+
+	var step = parameterArray['step']; 
+        delete parameterArray['step']; 
+
+	for( var i = 1; i < step; i++ )
+	{
+		var x_scale = x_range / step;
+		var y_scale = y_range / step;
+
+		var x = x1 + x_scale * i ;
+		var y = y1 + y_scale * i ;
+
+		var x_scale_length = 0 ;
+		var y_scale_length = 0 ; 
+
+		if( y_range != 0 )
+		{
+			x_scale_length = 10 ;
+		}
+
+		if( x_range != 0 )
+		{
+			y_scale_length = 10 ;
+		}
+		var x_scale = x + x_scale_length  ;
+		var y_scale = y + y_scale_length  ; 
+
+                var theAttr ={};
+                theAttr['x1'] =  x ;
+                theAttr['y1'] =  y ;
+                theAttr['x2'] =  x_scale ;
+                theAttr['y2'] =  y_scale ;
+                theAttr['style'] = parameterArray['style'] ;
+                self.element('line', theAttr, '      ' )
+                self.popData();
+	}
+
+        var theAttr ={};
+        theAttr['x1'] =  x1 ;
+        theAttr['y1'] =  y1 ;
+        theAttr['x2'] =  end_x  ;
+        theAttr['y2'] =  end_y  ;
+        theAttr['style'] = parameterArray['style']  
+        theAttr['marker-end'] = 'url(#Triangle)';
+        self.element('line', theAttr, '    ' )
+        self.popData();
+}
+
+
+
+// (x,y)                 (x + dx -0.4dy, y)
+//  *---------------------*
+//   \                     \
+//    \                     \
+//     *                     *
+//    /                     /
+//   /                     /
+//  *---------------------*
+SVGDrawer.prototype.processIcon = function( parameterArray, prefix )
+{
+        var self = this;
+
+	var x = parameterArray['x'];
+	var y = parameterArray['y'];
+	var dx = parameterArray['width'];
+	var dy = parameterArray['height'];
+
+	delete parameterArray['x'];
+	delete parameterArray['y'];
+	delete parameterArray['width'];
+	delete parameterArray['height'];
+
+	var arrowWidth = 0.3;
+
+	var x1 = x + dx - arrowWidth * dy;
+	var y1 = y;
+
+	var x2 = x + dx;
+	var y2 = y + 0.5 * dy;
+
+	var x3 = x + dx - arrowWidth * dy;
+	var y3 = y + dy;
+
+	var x4 = x;
+	var y4 = y + dy;
+
+	var x5 = x + arrowWidth * dy;
+	var y5 = y + 0.5 * dy;
+
+	var points = x + ' ' + y + ', ';
+	points += x1 + ' ' + y1 + ', ';
+	points += x2 + ' ' + y2 + ', ';
+	points += x3 + ' ' + y3 + ', ';
+	points += x4 + ' ' + y4 + ', ';
+	points += x5 + ' ' + y5 + ', ';
+	points += x + ' ' + y;
+
+        parameterArray['points'] = points;
+
+        self.element('polyline', parameterArray, prefix );
+}
+
+
+/***************
+              (1)
+-------------------------------------------------------
+   (x1,y1)    /\          |
+             /  \      arrow_height
+            /    \        |
+           /__  __\ (2)___|_
+              | |
+              | |
+              ---   (x2,y2)
+           |--|
+         space_width
+
+-------------------------------------------------------
+
+************/
+SVGDrawer.prototype.bigArrow = function( parameterArray, prefix )
+{
+	var x1 = parameterArray['x1'];
+	var x2 = parameterArray['x2'];
+	var y1 = parameterArray['y1'];
+	var y2 = parameterArray['y2'];
+	var arrow_height = parameterArray['arrow_height'];
+	var space_width = parameterArray['space_width'];
+
+	delete parameterArray['x1'];
+	delete parameterArray['x2'];
+	delete parameterArray['y1'];
+	delete parameterArray['y2'];
+	delete parameterArray['arrow_height'];
+	delete parameterArray['space_width'];
+
+	var width = x2 - x1;
+	var height = y2 - y1;
+
+	var x_1 = x1 + width / 2;
+	var y_1 = y1;
+
+	var x_2 = x2;
+	var y_2 = y1 + arrow_height;
+
+	var x_3 = x2 - space_width;
+	var y_3 = y1 + arrow_height;
+
+	var x_4 = x2 - space_width;
+	var y_4 = y2;
+
+	var x_5 = x1 + space_width;
+	var y_5 = y2;
+
+	var x_6 = x1 + space_width;
+	var y_6 = y1 + arrow_height;
+
+	var x_7 = x1;
+	var y_7 = y1 + arrow_height;
+
+	//var points = parameterArray['points'];
+	//if (typeof points === "undefined") {
+	//    console.log("points is undefined");
+	//    return;
+	//}
+
+
+	var points = x_1 + " " + y_1 + ",";
+	points = points + x_2 + " " + y_2 + ",";
+	points = points + x_3 + " " + y_3 + ",";
+	points = points + x_4 + " " + y_4 + ",";
+	points = points + x_5 + " " + y_5 + ",";
+	points = points + x_6 + " " + y_6 + ",";
+	points = points + x_7 + " " + y_7 + ",";
+	points = points + x_1 + " " + y_1 + ",";
+
+
+        parameterArray['points'] = points;
+
+        self.element('polyline', parameterArray, prefix );
+ 
+}
 SVGDrawer.prototype.drawFan = function( x, y, radius )
 {
 	var self = this;
@@ -350,225 +548,7 @@ SVGDrawer.prototype.writeComment = function( theText )
 }
 
  
- 
-
-// (x,y)                 (x + dx -0.4dy, y)
-//  *---------------------*
-//   \                     \
-//    \                     \
-//     *                     *
-//    /                     /
-//   /                     /
-//  *---------------------*
-SVGDrawer.prototype.processIcon = function( parameterArray )
-{
-
-	var x = parameterArray['x'];
-	var y = parameterArray['y'];
-	var dx = parameterArray['width'];
-	var dy = parameterArray['height'];
-
-	var arrowWidth = 0.3;
-
-	var x1 = x + dx - arrowWidth * dy;
-	var y1 = y;
-
-	var x2 = x + dx;
-	var y2 = y + 0.5 * dy;
-
-	var x3 = x + dx - arrowWidth * dy;
-	var y3 = y + dy;
-
-	var x4 = x;
-	var y4 = y + dy;
-
-	var x5 = x + arrowWidth * dy;
-	var y5 = y + 0.5 * dy;
-
-	var points = x + ' ' + y + ', ';
-	points += x1 + ' ' + y1 + ', ';
-	points += x2 + ' ' + y2 + ', ';
-	points += x3 + ' ' + y3 + ', ';
-	points += x4 + ' ' + y4 + ', ';
-	points += x5 + ' ' + y5 + ', ';
-	points += x + ' ' + y;
-
-	var style = "style = \"";
-
-	var stroke = parameterArray['stroke'];
-	if (typeof stroke === "undefined")
-	{
-		console.log("stroke is undefined");
-	}
-	else
-	{
-		var style = style + ' stroke:' + stroke + ";";
-	}
-
-	var stroke_width = parameterArray['stroke-width'];
-	if (typeof stroke_width === "undefined")
-	{
-		console.log("stroke_width is undefined");
-	}
-	else
-	{
-		var style = style + " stroke-width: " + stroke_width + ";";
-	}
-
-	var stroke_dasharray = parameterArray['stroke-dasharray'];
-	if (typeof stroke_dasharray === "undefined")
-	{
-		console.log("stroke_dasharray is undefined");
-	}
-	else
-	{
-		var style = style + ' stroke-dasharray: ' + stroke_dasharray + ";";
-	}
-
-	var fill = parameterArray['fill'];
-	if (typeof fill === "undefined")
-	{
-		console.log("fill is undefined");
-	}
-	else
-	{
-		var style = style + ' fill: ' + fill + ";";
-	}
-
-	style = style + "\""
-
-	fs.appendFileSync( this._fileName, "   <polyline points=\"" + points + "\" " );
-	fs.appendFileSync( this._fileName, style + "/>  \r\n");
-	fs.appendFileSync( this._fileName, "   \r\n");
-
-}
- 
-
-/***************
-              (1)
--------------------------------------------------------
-   (x1,y1)    /\          |
-             /  \      arrow_height
-            /    \        |
-           /__  __\ (2)___|_
-              | |
-              | |
-              ---   (x2,y2)
-           |--|
-         space_width
-
--------------------------------------------------------
-
-************/
-SVGDrawer.prototype.bigArrow = function( parameterArray )
-{
-	var x1 = parameterArray['x1'];
-	var x2 = parameterArray['x2'];
-	var y1 = parameterArray['y1'];
-	var y2 = parameterArray['y2'];
-	var arrow_height = parameterArray['arrow_height'];
-	var space_width = parameterArray['space_width'];
-
-	var width = x2 - x1;
-	var height = y2 - y1;
-
-	var x_1 = x1 + width / 2;
-	var y_1 = y1;
-
-	var x_2 = x2;
-	var y_2 = y1 + arrow_height;
-
-	var x_3 = x2 - space_width;
-	var y_3 = y1 + arrow_height;
-
-	var x_4 = x2 - space_width;
-	var y_4 = y2;
-
-	var x_5 = x1 + space_width;
-	var y_5 = y2;
-
-	var x_6 = x1 + space_width;
-	var y_6 = y1 + arrow_height;
-
-	var x_7 = x1;
-	var y_7 = y1 + arrow_height;
-
-	//var points = parameterArray['points'];
-	//if (typeof points === "undefined") {
-	//    console.log("points is undefined");
-	//    return;
-	//}
-
-
-	var points = x_1 + " " + y_1 + ",";
-	points = points + x_2 + " " + y_2 + ",";
-	points = points + x_3 + " " + y_3 + ",";
-	points = points + x_4 + " " + y_4 + ",";
-	points = points + x_5 + " " + y_5 + ",";
-	points = points + x_6 + " " + y_6 + ",";
-	points = points + x_7 + " " + y_7 + ",";
-	points = points + x_1 + " " + y_1 + ",";
-
-	var style = "style = \"";
-
-	var stroke = parameterArray['stroke'];
-	if (typeof stroke === "undefined")
-	{
-		console.log("stroke is undefined");
-	}
-	else
-	{
-		var style = style + ' stroke:' + stroke + ";";
-	}
-
-	var stroke_width = parameterArray['stroke-width'];
-	if (typeof stroke_width === "undefined")
-	{
-		console.log("stroke_width is undefined");
-	}
-	else
-	{
-		var style = style + " stroke-width: " + stroke_width + ";";
-	}
-
-	var stroke_dasharray = parameterArray['stroke-dasharray'];
-	if (typeof stroke_dasharray === "undefined")
-	{
-		console.log("stroke_dasharray is undefined");
-	}
-	else
-	{
-		var style = style + ' stroke-dasharray: ' + stroke_dasharray + ";";
-	}
-
-	var fill = parameterArray['fill'];
-	if (typeof fill === "undefined")
-	{
-		console.log("fill is undefined");
-	}
-	else
-	{
-		var style = style + ' fill: ' + fill + ";";
-	}
-
-	var transform = parameterArray['transform'];
-	if (typeof fill === "undefined")
-	{
-		console.log("transform is undefined");
-	}
-	else
-	{
-		transform = ' transform = \"' + transform + "\" ";
-	}
-
-	style = style + "\""
-
-	fs.appendFileSync( this._fileName, "   <polyline points=\"" + points + "\" " );
-	fs.appendFileSync( this._fileName, style + transform + "/>  \r\n");
-	fs.appendFileSync( this._fileName, "   \r\n");
-
-}
- 
+  
 SVGDrawer.prototype.drawHorizontalGridArray = function( x, y, array )
 {
 	var self = this
@@ -948,95 +928,6 @@ SVGDrawer.prototype.linkwitharrowline = function ( theSourceParameterArray, theT
 	return;
     }
 
-}
-
-SVGDrawer.prototype.coordinateaxis= function( parameterArray )
-{
-	var self = this;
-
-	var x1 = parameterArray['x1'];
-	var x2 = parameterArray['x2'];
-	var y1 = parameterArray['y1'];
-	var y2 = parameterArray['y2'];
-
-	var end_x = x2;
-	var end_y = y2;
-
-	var x_range = x2 - x1;
-	var y_range = y2 - y1;
-
-	var step = parameterArray['step']; 
-        delete parameterArray['step']; 
-
-	for( var i = 1; i < step; i++ )
-	{
-		var x_scale = x_range / step;
-		var y_scale = y_range / step;
-
-		var x = x1 + x_scale * i ;
-		var y = y1 + y_scale * i ;
-
-		var x_scale_length = 0 ;
-		var y_scale_length = 0 ; 
-
-		if( y_range != 0 )
-		{
-			x_scale_length = 10 ;
-		}
-
-		if( x_range != 0 )
-		{
-			y_scale_length = 10 ;
-		}
-		var x_scale = x + x_scale_length  ;
-		var y_scale = y + y_scale_length  ; 
-
-                var theAttr ={};
-                theAttr['x1'] =  x ;
-                theAttr['y1'] =  y ;
-                theAttr['x2'] =  x_scale ;
-                theAttr['y2'] =  y_scale ;
-                theAttr['style'] = parameterArray['style'] ;
-                self.element('line', theAttr, '      ' )
-                self.popData();
-	}
-
-        var theAttr ={};
-        theAttr['x1'] =  x1 ;
-        theAttr['y1'] =  y1 ;
-        theAttr['x2'] =  end_x  ;
-        theAttr['y2'] =  end_y  ;
-        theAttr['style'] = parameterArray['style']  + ' marker-end: url(#Triangle)' + ";";
-        self.element('line', theAttr, '    ' )
-        self.popData();
-}
-SVGDrawer.prototype.defineHardDisk = function( )
-{
-
-		fs.appendFileSync(  this._fileName, "   \r\n"); 
-		fs.appendFileSync(  this._fileName, "  <defs>   \r\n"); 
-		fs.appendFileSync(  this._fileName, "    <marker id=\"Harddisk\"   \r\n"); 
-		fs.appendFileSync(  this._fileName, "      viewBox=\"0 0 50 110\" refX=\"0\" refY=\"0\"    \r\n"); 
-		fs.appendFileSync(  this._fileName, "      markerUnits=\"strokeWidth\"   \r\n"); 
-		fs.appendFileSync(  this._fileName, "      markerWidth=\"40\" markerHeight=\"100\"   \r\n"); 
-		fs.appendFileSync(  this._fileName, "      orient=\"auto\">   \r\n"); 
-
-		fs.appendFileSync(  this._fileName, "      <ellipse cx=\"24\" cy=\"24\" rx=\"23\" ry=\"10\" stroke=\"black\"    \r\n");
-		fs.appendFileSync(  this._fileName, "         stroke-width=\"2\" fill=\"white\"   />   \r\n");
-
-		fs.appendFileSync(  this._fileName, "      <ellipse cx=\"24\" cy=\"64\" rx=\"23\" ry=\"10\" stroke=\"black\"    \r\n");
-		fs.appendFileSync(  this._fileName, "         stroke-width=\"2\" fill=\"white\"   />   \r\n");
-
-		fs.appendFileSync(  this._fileName, "      <line x1=\"1\" y1=\"24\" x2=\"1\" y2=\"64\"   \r\n"); 
-		fs.appendFileSync(  this._fileName, "        style=\"stroke:black;stroke-width:1\"/>   \r\n"); 
-
-		fs.appendFileSync(  this._fileName, "      <line x1=\"47\" y1=\"24\" x2=\"47\" y2=\"64\"   \r\n"); 
-		fs.appendFileSync(  this._fileName, "        style=\"stroke:black;stroke-width:1\"/>   \r\n");
-
-		fs.appendFileSync(  this._fileName, "    </marker>   \r\n"); 
-		fs.appendFileSync(  this._fileName, "  </defs>   \r\n"); 
-		fs.appendFileSync(  this._fileName, "   \r\n"); 
-		fs.appendFileSync(  this._fileName, "   \r\n"); 
 }
 
 SVGDrawer.prototype.defineCloud = function( ) 
