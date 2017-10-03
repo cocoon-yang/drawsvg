@@ -11,6 +11,7 @@ var SVGDrawer = function()
 {
 	this.PI = 3.14159;
 	this._fileName = '';
+	this._STACK = [];
 }
 
 SVGDrawer.prototype.setFileName = function( fileName )
