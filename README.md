@@ -44,11 +44,14 @@ function draw()
                 drawer.popData();
 
                 theAttr={};
-                theAttr['cx'] = '300';
-                theAttr['cy'] = '300';
-                theAttr['r'] = '30';
-                theAttr['stroke'] = 'black';
-                drawer.element('circle', theAttr )
+                theAttr['x1'] = '250';
+                theAttr['y1'] = '300';
+                theAttr['x2'] = '250';
+                theAttr['y2'] = '200';
+                theAttr['style'] = 'stroke-width:1;stroke:rgb(0,0,0)';
+                theAttr['marker-end'] = 'url(#Triangle)';
+                drawer.element('line', theAttr )
+                drawer.popData(); 
 
    	        // ...                 
 
