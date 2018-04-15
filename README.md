@@ -3,18 +3,11 @@ Generating svg file in Node.js context.
 
 ## Examples
 <pre>
-var fs = require('fs');
-var sys = require("util");
-var path = require('path');
-var assert = require('assert');
-
 var SVGDrawer = require('./src/drawsvg.js');
 var drawer = new SVGDrawer(); 
 
 function draw(theFileName)
 {
-	// File name
-	
 	drawer.setFileName( theFileName ); 
 
 	try{
