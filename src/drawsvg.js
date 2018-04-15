@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Create simply svg file in Node.js context.
  */
 
@@ -12,21 +12,37 @@ var SVGDrawer = function()
 	this.PI = 3.14159;
 	this._fileName = '';
 	this._STACK = [];
+	this._fd;
 }
 
 SVGDrawer.prototype.setFileName = function( fileName )
 {
-	this._fileName = fileName;
+	var self = this;
+	if( undefined == fileName )
+	{
+		console.log("SVGDrawer::setFileName: file name is undefined, please set valid file name.");
+		return;
+	}
+	self._fileName = fileName;
+
+	try {
+	  if (  self._fd !== undefined){
+	      fs.closeSync(self._fd);
+	  }
+
+ 	  self._fd = fs.openSync(self._fileName, 'w'); 
+	} catch (err) {
+ 	 /* Handle the error */
+		console.log("SVGDrawer::setFileName: open file with the name failed.");
+		return;
+	}   
 }
 
 SVGDrawer.prototype.getFileName = function( )
 {
 	return this._fileName;
 }
-SVGDrawer.prototype.header = function( )
-{
-	fs.appendFileSync( this._fileName, "<?xml version=\"1.0\"?>  \r\n");
-}
+
 
 
 SVGDrawer.prototype.pushData = function( theData )
@@ -34,19 +50,40 @@ SVGDrawer.prototype.pushData = function( theData )
     this._STACK.push( theData );
 }
 
+
+// 
+// Pop one data from stack and append it to the target file synonmously
+//
 SVGDrawer.prototype.popData = function( )
 {
-    var theData =  this._STACK.pop();     
-    fs.appendFileSync( this._fileName, theData ); 
+     var self = this;
+	if ( typeof(self._fd) == undefined ){		
+		console.log("SVGDrawer::popData: file descriptor is invalid.");
+	      return;
+	}
+	try {
+    		var theData =  this._STACK.pop();     
+    		fs.appendFileSync( self._fileName, theData ); 
+	} catch (err) {
+ 	 /* Handle the error */
+		console.log("SVGDrawer::popData: appending data failed.");
+		console.log("SVGDrawer::popData:  ", err );
+		return;
+	} 
 }
 
 SVGDrawer.prototype.close = function( )
 {
-    var len = this._STACK.length;
+	var self = this;
+    var len = self._STACK.length;
     for( var i = 0; i < len; i++ )
     {
-         this.popData();
+         self.popData();
     }
+
+	  if ( self._fd !== undefined){
+	      fs.closeSync(self._fd);
+	  }
 }
 
 SVGDrawer.prototype.element = function( name, attribute, prefix  )
@@ -79,6 +116,13 @@ SVGDrawer.prototype.element = function( name, attribute, prefix  )
      {
           fs.appendFileSync( this._fileName, String(prefix) + '  ' + content + '\n'  ); 
      }     
+}
+
+SVGDrawer.prototype.header = function( )
+{
+	fs.appendFileSync( this._fileName, "<?xml version=\"1.0\" standalone=\"no\"?> \r\n");
+	fs.appendFileSync( this._fileName, "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \r\n ");
+	fs.appendFileSync( this._fileName, "   \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\"> \r\n"); 
 }
 SVGDrawer.prototype.writeHeater = function( )
 {
