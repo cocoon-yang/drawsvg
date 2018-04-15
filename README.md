@@ -1,5 +1,8 @@
 # drawsvg
-Generating svg file in Node.js context.
+Scalable Vector Graphics (SVG) is a language for describing two-dimensional graphics in XML[1]. This module is intend to draw a vector graph with text commands, thus every piexl is under control.
+
+The element of the svg document can be divided into three parts: element head, content and element end. A long list of attributions of the element are inserted into the element head. These elements constitute a tree data structure with a root node named as "svg". This module just put these attributions into a list and put them in proper place.
+
 
 ## Examples
 <pre>
@@ -83,3 +86,7 @@ function draw(theFileName)
 var fileName = "foo.svg";
 draw(fileName);
 </pre>
+
+References
+
+>[1] https://www.w3.org/TR/2011/REC-SVG11-20110816/
