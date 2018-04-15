@@ -11,14 +11,11 @@ var assert = require('assert');
 var SVGDrawer = require('./src/drawsvg.js');
 var drawer = new SVGDrawer(); 
 
-function draw()
+function draw(theFileName)
 {
 	// File name
-	var fileName = "foo.svg";
-	drawer.setFileName( fileName ); 
-
-	var fdw = fs.openSync( fileName, 'w');
-	assert.ok( fdw, "open target input data file failed." );
+	
+	drawer.setFileName( theFileName ); 
 
 	try{
 		drawer.header();
@@ -59,15 +56,12 @@ function draw()
 	}
 	catch(err)
 	{
-			console.log("[Error]: " + err);
-			return false;
+		drawer.close();
+		console.log("[Error]: " + err);
+		return false;
 	}
 
-	//------------------------------------
-	// close file handler
-	//------------------------------------
-	fs.closeSync( fdw );
 }
-
-draw();
+var fileName = "foo.svg";
+draw(fileName);
 </pre>
