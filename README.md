@@ -43,6 +43,31 @@ function draw(theFileName)
                 drawer.element('line', theAttr )
                 drawer.popData(); 
 
+
+		// animate element
+                drawer.writeComment("Animate element"); 
+
+                theAttr={};
+                theAttr['id'] = 'rectElement';
+                theAttr['x'] = '250';
+                theAttr['y'] = '300';
+                theAttr['width'] = '250';
+                theAttr['height'] = '200';
+                theAttr['fill'] = 'rgb(255,255,0)';
+                drawer.element('rect', theAttr );
+
+                theAttr={};
+                theAttr['attributeName'] = 'x';
+                theAttr['attributeType'] = 'XML';
+                theAttr['begin'] = '0s';
+                theAttr['dur'] = '2s';
+                theAttr['fill'] = 'freeze';
+                theAttr['from'] = '250';
+                theAttr['to'] = '0';
+                drawer.element('animate', theAttr );
+                drawer.popData();  // animate 
+
+                drawer.popData();  // rect 
    	        // ...                 
 
 		drawer.close();
