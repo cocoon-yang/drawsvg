@@ -1,7 +1,7 @@
 # drawsvg
-Scalable Vector Graphics (SVG) is a language for describing two-dimensional graphics in XML[1]. This module is intend to draw a vector graph with text commands, thus every piexl is under control.
+Scalable Vector Graphics (SVG) is a language for describing two-dimensional graphics in XML[1]. This module is intend to write a vector graph with text commands, thus every piexl is under control.
 
-The element of the svg document can be divided into three parts: element head, content and element end. A long list of attributions of the element are inserted into the element head. These elements constitute a tree data structure with a root node named as "svg". This module just put these attributions into a list and put them in proper place.
+The elements of a svg file constitute a tree data structure with a root node named as "svg". An element of the svg document can be divided into three parts: element head, content and element end. A long list of attributions of the element are inserted into the element head. This module just put these attributions into a list and lay them at proper place.
 
 
 ## Examples
