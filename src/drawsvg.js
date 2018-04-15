@@ -86,13 +86,13 @@ SVGDrawer.prototype.close = function( )
 	  }
 }
 
-SVGDrawer.prototype.element = function( name, attribute, prefix  )
+SVGDrawer.prototype.element = function( name, attribute, indent  )
 {
      var self = this;
 
-     if( undefined == prefix )
+     if( undefined == indent )
      {
-          prefix = '  ';
+          indent = '  ';
      }
 
      var content = attribute['content']
@@ -101,10 +101,10 @@ SVGDrawer.prototype.element = function( name, attribute, prefix  )
           delete attribute['content'];
      }
 	
-     var str = String(prefix) + '</' + name + '> \n';
+     var str = String(indent) + '</' + name + '> \n';
      self.pushData( str );
 
-     str = String(prefix) + '<' + name;
+     str = String(indent) + '<' + name;
      for( var id in attribute )
      {
           str += ' ' + id + '=\"' + attribute[id] +'\"';
