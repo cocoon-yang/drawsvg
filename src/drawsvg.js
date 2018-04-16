@@ -593,54 +593,6 @@ SVGDrawer.prototype.writeComment = function( theText )
 }
 
  
-  
-SVGDrawer.prototype.drawHorizontalGridArray = function( x, y, array )
-{
-	var self = this
-	var length = array.length;
-	console.log('drawGeneticArray length = ' + length);
-
-	var width = 30;
-	var height = 30;
-
-	for( var i = 0; i < length; i++ )
-	{
-		var theX = x + i * width;
-		var theY = y //+ i * height;
-
-		fs.appendFileSync( self._fileName, "      <rect x=\"" + theX + "\" y=\"" + theY + "\"  width=\"" + width + "\" height=\""+ height +"\"   \r\n");
-		fs.appendFileSync( self._fileName, "        style=\"fill:white;stroke:black;stroke-width:2;opacity:0.5\"/>   \r\n");
-
-		self.drawText ( (theX + 8 ), ( theY +23), 20, array[i] );
-	}
-
-}
-
-SVGDrawer.prototype.drawGeneticArray = function( x, y, array )
-{
-
-	var self = this
-
-	var length = array.length;
-
-	console.log('drawGeneticArray length = ' + length);
-
-	var width = 30;
-	var height = 30;
-
-	for( var i = 0; i < length; i++ )
-	{
-		var theX = x //+ i * width;
-		var theY = y + i * height;
-
-		fs.appendFileSync( self._fileName, "      <rect x=\"" + theX + "\" y=\"" + theY + "\"  width=\"" + width + "\" height=\""+ height +"\"   \r\n");
-		fs.appendFileSync( self._fileName, "        style=\"fill:white;stroke:black;stroke-width:2;opacity:0.5\"/>   \r\n");
-
-		self.drawText ( (theX + 8 ), ( theY +23), 20, array[i] );
-	}
-
-}
-
 SVGDrawer.prototype.linkwitharrowline = function ( theSourceParameterArray, theTargetParameterArray , type )
 {
 	console.log(" ");
