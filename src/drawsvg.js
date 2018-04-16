@@ -114,7 +114,7 @@ SVGDrawer.prototype.element = function( name, attribute, indent  )
 
      if( undefined !== content )
      {
-          fs.appendFileSync( this._fileName, String(prefix) + '  ' + content + '\n'  ); 
+          fs.appendFileSync( this._fileName, String(indent) + '  ' + content + '\n'  ); 
      }     
 }
 
