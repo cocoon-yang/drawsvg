@@ -104,6 +104,15 @@ function draw()
 
 draw();
 ```
+
+## Run in Windows
+Assummed that the node.js has been set up, and the svgdrawer module has been installed (or you can just copy svgdrawer.js into the node_modules folder of node.js environment folder). 
+Save the above codes as rela-disp.js, and triggle cmd console, run the rela-disp.js as following: 
+```
+> node rela-disp.js
+```
+
+
 The reladisp.svg creade by the above process is as following:
 ```
 <?xml version="1.0" standalone="no"?> 
