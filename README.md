@@ -1,6 +1,9 @@
-# drawsvg
-Scalable Vector Graphics (SVG) is a language for describing two-dimensional graphics in XML[1]. This module is intend to write a vector graph with text commands, thus every piexl is under control.
+# svgdrawer
 
+Scalable Vector Graphics (SVG) is a language for describing two-dimensional graphics 
+in XML. svgdrawer is a simple module that writes a vector graph with text commands, thus every piexl is under control.
+
+ 
 The elements of a svg file constitute a tree data structure with a root node named as "svg". An element of the svg document can be divided into three parts: element head, content and element end. For example: 
 ```
 <desc>Something</desc> 
@@ -9,90 +12,137 @@ The name of the element is "desc".
 The head of this desc element is "<desc>";
 the end is "</desc>", and the content of it is "Something". A long list of attributions of the element would inserted into the element head. This module just put these attributions into a list and lay them at proper place.
 
+# Main Methods
+  - open( filePath ) 
+  - close()
+  - setFileName( filePath )
+  - getFileName() 
+  - pushData( theData ) 
+  - popData() 
+  - element( name, attribute, indent )
+  - writeComment( theText ) 
+  - defineTriangle() 
+  - header( )
 
-## Examples
-<pre>
-var SVGDrawer = require('./src/drawsvg.js');
+# Installation
+
+readlinesyn requires [Node.js](https://nodejs.org/) v4+ to run.
+
+
+```
+$ npm install svgdrawer
+```  
+
+
+# Example
+
+```
+//
+// Modules
+var SVGDrawer = require('svgdrawer');
 var drawer = new SVGDrawer(); 
 
-function draw(theFileName)
+// Global variables
+var fileName = "reladisp.svg";
+var theAttr={}; 
+
+function draw()
 {
-	drawer.setFileName( theFileName ); 
+    try{
+        drawer.setFileName( fileName );
+        drawer.header();
+        theAttr={};
+        theAttr['width'] = '100%';
+        theAttr['height'] = '100%';
+        theAttr['version'] = '1.1';
+        theAttr['xmlns']="http://www.w3.org/2000/svg"
+        drawer.element('svg', theAttr, '' )
 
-	try{
-		drawer.header();
-                var theAttr={};
-                theAttr['width'] = '100%';
-                theAttr['height'] = '100%';
-                theAttr['version'] = '1.1';
-                theAttr['xmlns']="http://www.w3.org/2000/svg"
-                drawer.element('svg', theAttr, '' )
+        drawer.defineTriangle(); 
 
+        var origin_x = 500;
+        var origin_y = 500;
 
-                theAttr={};
-                theAttr['font-family'] = 'Verdana';
-                theAttr['font-size'] = '12';
-                drawer.element('g', theAttr )
+        var P_x = parseInt( origin_x )  ;
+        var P_y = parseInt( origin_y )  ;
+        var Q_x = parseInt( origin_x ) - 20;
+        var Q_y = parseInt( origin_y ) - 100;
 
-                theAttr={};
-                theAttr['width'] = '300';
-                theAttr['height'] = '100';
-                theAttr['style'] = 'fill:rgb(0,0,255);stroke-width:1;stroke:rgb(0,0,0)';
-                drawer.element('rect', theAttr )
-                drawer.popData();
-                drawer.popData();
+        var p_x = parseInt( origin_x ) + 100;
+        var p_y = parseInt( origin_y ) + 20;
+        var q_x = parseInt( origin_x ) + 110;
+        var q_y = parseInt( origin_y ) - 120;
+        drawer.writeComment("PQ"); 
 
-                theAttr={};
-                theAttr['x1'] = '250';
-                theAttr['y1'] = '300';
-                theAttr['x2'] = '250';
-                theAttr['y2'] = '200';
-                theAttr['style'] = 'stroke-width:1;stroke:rgb(0,0,0)';
-                theAttr['marker-end'] = 'url(#Triangle)';
-                drawer.element('line', theAttr )
-                drawer.popData(); 
+        theAttr={};
+        theAttr['style'] = 'stroke-width:2;stroke:gray';
+        //theAttr['marker-end'] = 'url(#Triangle)';
+        drawer.line( P_x, P_y, Q_x, Q_y, theAttr );
+ 
+        drawer.writeComment("uP"); 
 
+        theAttr={};
+        theAttr['style'] = 'stroke-width:2;stroke:gray';
+        theAttr['marker-end'] = 'url(#Triangle)';
+        drawer.line( P_x, P_y, p_x, p_y, theAttr );
+ 
+        drawer.writeComment("uQ"); 
 
-		// animate element
-                drawer.writeComment("Animate element"); 
-
-                theAttr={};
-                theAttr['id'] = 'rectElement';
-                theAttr['x'] = '250';
-                theAttr['y'] = '300';
-                theAttr['width'] = '250';
-                theAttr['height'] = '200';
-                theAttr['fill'] = 'rgb(255,255,0)';
-                drawer.element('rect', theAttr );
-
-                theAttr={};
-                theAttr['attributeName'] = 'x';
-                theAttr['attributeType'] = 'XML';
-                theAttr['begin'] = '0s';
-                theAttr['dur'] = '2s';
-                theAttr['fill'] = 'freeze';
-                theAttr['from'] = '250';
-                theAttr['to'] = '0';
-                drawer.element('animate', theAttr );
-                drawer.popData();  // animate 
-
-                drawer.popData();  // rect 
-   	        // ...                 
-
-		drawer.close();
-	}
-	catch(err)
-	{
-		drawer.close();
-		console.log("[Error]: " + err);
-		return false;
-	}
-
+        theAttr={};
+        theAttr['style'] = 'stroke-width:2;stroke:gray';
+        theAttr['marker-end'] = 'url(#Triangle)';
+        drawer.line( Q_x, Q_y, q_x, q_y, theAttr );
+ 
+        drawer.close();
+    }
+    catch(err)
+    {
+        console.log("[Error]: " + err);
+        return false;
+    }
 }
-var fileName = "foo.svg";
-draw(fileName);
-</pre>
 
-References
+draw();
+```
+The reladisp.svg creade by the above process is as following:
+```
+<?xml version="1.0" standalone="no"?> 
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" 
+    "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"> 
+<svg width="100%" height="100%" version="1.1" xmlns="http://www.w3.org/2000/svg" >
+  
+  <desc>------------------------------------------------------</desc>  
+  <desc>Triangle</desc>  
+  
+  <defs >
+    <marker id="Triangle" viewBox="0 0 12 10" refX="10" refY="5" markerUnits="strokeWidth" markerWidth="12" markerHeight="8" style="fill-rule:evenodd;stroke:none" orient="auto" >
+      <path d="M 0 0 L 12 5 L 0 10 L 3 5" >
+      </path> 
+      <path d="M 0 5 L 3 5" style="fill:none;stroke:#000000;stroke-width:1.5" >
+      </path> 
+    </marker> 
+  </defs> 
+  
+  <desc>------------------------------------------------------</desc>  
+  <desc>PQ</desc>  
+  
+  <line x1="500" y1="500" x2="480" y2="400" style="stroke-width:2;stroke:gray" >
+  </line> 
+  
+  <desc>------------------------------------------------------</desc>  
+  <desc>uP</desc>  
+  
+  <line x1="500" y1="500" x2="600" y2="520" style="stroke-width:2;stroke:gray" marker-end="url(#Triangle)" >
+  </line> 
+  
+  <desc>------------------------------------------------------</desc>  
+  <desc>uQ</desc>  
+  
+  <line x1="480" y1="400" x2="610" y2="380" style="stroke-width:2;stroke:gray" marker-end="url(#Triangle)" >
+  </line> 
+</svg> 
+```
+
+# References
 
 >[1] https://www.w3.org/TR/2011/REC-SVG11-20110816/
