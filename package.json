@@ -1,0 +1,17 @@
+{  
+  "name": "svgdrawer",  
+  "description": "A simple module for creating svg file in node.js environment", 
+  "homepage": "https://github.com/cocoon-yang/svgdrawer#readme",
+  "author": {
+    "name": "Chunfeng Yang",
+    "email": "yangchunfeng@126.com"
+  },   
+  "version": "0.2.0",  
+  "private": false, 
+  "main": "svgdrawer.js", 
+  "dependencies": {   
+  },
+  "keywords":[
+    "SVG"
+  ]
+}  
