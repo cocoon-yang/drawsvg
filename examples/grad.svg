@@ -1,0 +1,90 @@
+<?xml version="1.0" standalone="no"?> 
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" 
+    "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"> 
+<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink">
+  
+  <desc>------------------------------------------------------</desc>  
+  <desc>Triangle</desc>  
+  
+  <defs>
+    <marker id="Triangle" viewBox="0 0 12 10" refX="12" refY="5" markerUnits="strokeWidth" markerWidth="12" markerHeight="8" style="fill-rule:evenodd;stroke:none" orient="auto">
+      <path d="M 0 0 L 12 5 L 0 10 L 3 5">
+      </path> 
+      <path d="M 0 5 L 3 5" style="fill:none;stroke:#000000;stroke-width:1.5">
+      </path> 
+    </marker> 
+  </defs> 
+  
+  <desc>------------------------------------------------------</desc>  
+  <desc>x coordinate axis</desc>  
+  
+  <line x1="300" y1="300" x2="500" y2="300" style="stroke-width:1;stroke:rgb(0,0,0)" marker-end="url(#Triangle)">
+  </line> 
+  <text x="500" y="320" fill="black">
+    x
+  </text> 
+  
+  <desc>------------------------------------------------------</desc>  
+  <desc>y coordinate axis</desc>  
+  
+  <line x1="300" y1="300" x2="300" y2="100" style="stroke-width:1;stroke:rgb(0,0,0)" marker-end="url(#Triangle)">
+  </line> 
+  <text x="280" y="100" fill="black">
+    y
+  </text> 
+  
+  <desc>------------------------------------------------------</desc>  
+  <desc>f(x)</desc>  
+  
+  <path id="f(x)" d="M 310 250 Q 470 330,  510 110  " fill="none" style="stroke-width:1;stroke:black; stroke-width: 3;">
+  </path> 
+  <text x="500" y="100" fill="black">
+     y = f(x) 
+  </text> 
+  
+  <desc>------------------------------------------------------</desc>  
+  <desc>different of f(x)</desc>  
+  
+  <line x1="390" y1="290" x2="490" y2="220" style="stroke-width:1;stroke:red">
+  </line> 
+  
+  <desc>------------------------------------------------------</desc>  
+  <desc>dx coordinate axis</desc>  
+  
+  <line x1="440" y1="255" x2="540" y2="255" style="stroke-width:1;stroke:rgb(0,0,0)" marker-end="url(#Triangle)">
+  </line> 
+  <text x="530" y="270" fill="black">
+    dx
+  </text> 
+  
+  <desc>------------------------------------------------------</desc>  
+  <desc>dy coordinate axis</desc>  
+  
+  <line x1="440" y1="255" x2="440" y2="155" style="stroke-width:1;stroke:rgb(0,0,0)" marker-end="url(#Triangle)">
+  </line> 
+  <text x="410" y="165" fill="black">
+    dy
+  </text> 
+  <text x="500" y="230" fill="black">
+    dy = A(x)dx
+  </text> 
+  <text x="630" y="200" fill="black">
+    dx = x - x0
+  </text> 
+  <text x="630" y="220" fill="black">
+    dy = y - y0
+  </text> 
+  <text x="630" y="240" fill="black">
+    A(x) = f'(x)
+  </text> 
+  <line x1="440" y1="255" x2="440" y2="300" stroke-dasharray="5, 5" style="stroke-width:1;stroke:black">
+  </line> 
+  <text x="430" y="320" fill="black">
+    x0
+  </text> 
+  <line x1="440" y1="255" x2="300" y2="255" stroke-dasharray="5, 5" style="stroke-width:1;stroke:black">
+  </line> 
+  <text x="280" y="255" fill="black">
+    y0
+  </text> 
+</svg> 
