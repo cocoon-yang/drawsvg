@@ -28,7 +28,6 @@ the end is "</desc>", and the content of it is "Something". A long list of attri
 
 readlinesyn requires [Node.js](https://nodejs.org/) v4+ to run.
 
-
 ```
 $ npm install svgdrawer
 ```  
@@ -106,12 +105,11 @@ draw();
 ```
 
 ## Run in Windows
-Assummed that the node.js has been set up, and the svgdrawer module has been installed (or you can just copy svgdrawer.js into the node_modules folder of node.js environment folder). 
-Save the above codes as rela-disp.js, and triggle cmd console, run the rela-disp.js as following: 
+Assummed that the node.js has been set up, and install the svgdrawer module has been installed (or you can just copy svgdrawer.js into the node_modules folder of node.js environment folder as it has no dependents). 
+Save the above codes as rela-disp.js, and run the rela-disp.js as following: 
 ```
 > node rela-disp.js
 ```
-
 
 The reladisp.svg creade by the above process is as following:
 ```
